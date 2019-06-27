@@ -21,7 +21,6 @@ provisioner:
     host_vars:
       instance:
         ansible_python_interpreter: ${PYTHON_PATH:-/usr/bin/python}
-        gather_facts: no
   lint:
     name: ansible-lint
 scenario:
