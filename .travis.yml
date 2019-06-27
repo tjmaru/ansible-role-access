@@ -11,8 +11,6 @@ env:
     - MOLECULE_DISTRO: ubuntu
       VERSION: 18.04
       PYTHON_PATH: /usr/bin/python3
-    - MOLECULE_DISTRO: ubuntu
-      VERSION: 16.04
 
 before_install:
   - cd ../
