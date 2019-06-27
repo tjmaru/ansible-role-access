@@ -1,0 +1,13 @@
+---
+- name: adding users to hosts SUSE
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.psd }}"
+    groups: "{% if item.isroot is defined and item.isroot == 'yes' %} root {% else %} users {% endif %}"
+    append: yes
+    comment: "{{ item.com }}"
+    state: "{{ item.state | default('present') }}"
+  become: yes
+  when: ansible_distribution in ["SLES","openSUSE"]
+  with_items:
+    - "{{ (users|default([])) | union((users_group_all|default([]))) }}"

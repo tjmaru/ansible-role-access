@@ -1,0 +1,14 @@
+---
+- name: Setup task on "{{ ansible_distribution }}"
+  include_tasks: "setup-{{ ansible_distribution }}.yml"
+
+- name: adding keys for users
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ lookup('file', item.path ) }}"
+  become: yes
+  when:
+    - item.path is defined
+    - item.state|default('present') != 'absent'
+  with_items:
+    - "{{ (users|default([])) | union((users_group_all|default([]))) }}"

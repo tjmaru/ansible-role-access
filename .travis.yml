@@ -1,0 +1,30 @@
+---
+language: python
+services: docker
+
+env:
+  global:
+    - ROLE_NAME: access
+  matrix:
+    - MOLECULE_DISTRO: centos
+      VERSION: 7
+    - MOLECULE_DISTRO: ubuntu
+      VERSION: 18.04
+      PYTHON_PATH: /usr/bin/python3
+    - MOLECULE_DISTRO: ubuntu
+      VERSION: 16.04
+
+before_install:
+  - cd ../
+  - mv ansible-role-$ROLE_NAME $ROLE_NAME
+  - cd $ROLE_NAME
+  - 'sudo docker pull solita/${MOLECULE_DISTRO:-centos}-systemd:${VERSION:-7}'
+
+install:
+  - pip install ansible==2.7.11 molecule==2.19 docker
+
+before_script:
+  - molecule --version
+
+script:
+  - molecule test
